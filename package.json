@@ -17,5 +17,8 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
   }
 }

@@ -1,9 +1,10 @@
+const debug = require('debug')('markov');
 const fs = require('fs');
 
 class Markov {
 
   constructor() {
-    console.log("In the constructor");
+    debug("In the constructor");
     
     this.transitions = {
       '<start-document>': {}
@@ -26,20 +27,20 @@ class Markov {
   }
 
   ingest(filename) {
-    console.log(`Reading file ${filename}...`);
+    debug(`Reading file ${filename}...`);
     
     fs.readFile(filename, (err, data) => {
       if (err) throw err;
-      console.log(`Read ${data.length} characters.`);
+      debug(`Read ${data.length} characters.`);
       
       this.process(data);
 
-      this.printTransitions();
+      // this.printTransitions();
     });
   }
 
   process(data) {
-    console.log(`data is of class ${data.constructor.name}`);
+    debug(`data is of class ${data.constructor.name}`);
     const text = data.toString();
 
     this.beginDocument();
@@ -47,10 +48,10 @@ class Markov {
     const lines = text.split('\n');
     lines.forEach(line => {
       if (line === '') {
-        console.log("Empty line");
+        debug("Empty line");
       } else {
         const tokens = this.splitTokens(line);
-        console.log(`Line beginning with ${tokens[0]} and containing ${tokens.length} tokens`);
+        debug(`Line beginning with ${tokens[0]} and containing ${tokens.length} tokens`);
         tokens.forEach(this.addToken.bind(this));
       }
     });

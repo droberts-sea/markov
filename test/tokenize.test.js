@@ -22,6 +22,13 @@ test('is a generator function', () => {
   verifyTokenization(text, expectedTokens);
 })
 
+test('converts everything to lower case', () => {
+  const text = 'the Quick BROWN fOx';
+  const expectedTokens = ['the', 'quick', 'brown', 'fox']
+
+  verifyTokenization(text, expectedTokens);
+})
+
 test('repeated space is ignored', () => {
   const text = 'the  quick brown    fox';
   const expectedTokens = ['the', 'quick', 'brown', 'fox']

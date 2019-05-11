@@ -31,13 +31,13 @@ const SPECIAL_TOKENS = [
 
 function* tokenize(text) {
   // Find paragraph breaks
-  text = text.trim()
+  text = text.trim().toLowerCase();
   
   // Find punctuation
   SPECIAL_TOKENS.forEach(special => {
     text = text.replace(special.pattern, ` <${special.escape}> `);
   });
-    
+
   const tokens = text.split(/\s+/);
   for (const token of tokens) {
     if (token === "") continue;

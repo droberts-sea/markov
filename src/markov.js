@@ -1,4 +1,8 @@
-const debug = require('debug')('markov');
+import dbg from 'debug';
+const debug = dbg('markov');
+
+import tokenize from './tokenize';
+
 
 const TOKENS = {
   START_DOCUMENT: '<start-document>',
@@ -41,20 +45,14 @@ class Markov {
 
   process(data) {
     debug(`data is of class ${data.constructor.name}`);
-    const text = data.toString();
-
+    
     this.beginDocument();
     
-    const lines = text.split('\n');
-    lines.forEach(line => {
-      if (line === '') {
-        debug("Empty line");
-      } else {
-        const tokens = this.splitTokens(line);
-        debug(`Line beginning with ${tokens[0]} and containing ${tokens.length} tokens`);
-        tokens.forEach(this.addToken.bind(this));
-      }
-    });
+    const text = data.toString();
+    const tokenStream = tokenize(text);
+    for (const token of tokenStream) {
+      this.addToken(token);
+    }
 
     this.endDocument();
   }
@@ -156,4 +154,4 @@ class Markov {
   }
 }
 
-module.exports = Markov;
+export default Markov;

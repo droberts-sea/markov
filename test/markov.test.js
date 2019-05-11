@@ -2,7 +2,7 @@ import {toBeDeepCloseTo,toMatchCloseTo} from 'jest-matcher-deep-close-to';
 import { log } from 'core-js';
 expect.extend({toBeDeepCloseTo, toMatchCloseTo});
 
-const Markov = require('../src/markov');
+import Markov from '../src/markov';
 
 test('can be instantiated', () => {
   const markov = new Markov();

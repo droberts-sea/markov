@@ -23,6 +23,7 @@
     "jest-matcher-deep-close-to": "^1.3.0"
   },
   "scripts": {
+    "babel-node": "babel-node --presets=env",
     "build": "babel src -d lib",
     "test": "jest"
   },

@@ -1,22 +1,30 @@
 const debug = require('debug')('markov');
 const fs = require('fs');
 
+const TOKENS = {
+  START_DOCUMENT: '<start-document>',
+  END_DOCUMENT: '<end-document>'
+}
+
 class Markov {
 
   constructor() {
     debug("In the constructor");
     
-    this.transitions = {
-      '<start-document>': {}
-    }
+    this.transitions = {}
+    this.transitions[TOKENS.START_DOCUMENT] = {}
   }
 
   beginDocument() {
-    this.tokenHistory = '<start-document>';
+    this.tokenHistory = TOKENS.START_DOCUMENT;
   }
 
   endDocument() {
-    this.addToken('<end-document>');
+    if (this.tokenHistory === TOKENS.START_DOCUMENT) {
+      debug("Ignored empty document");
+    } else {
+      this.addToken(TOKENS.END_DOCUMENT);
+    }
   }
 
   printTransitions() {

@@ -34,12 +34,4 @@ class Markov {
   }
 }
 
-const FILENAME = 'data/wwii.txt';
-const markov = new Markov();
-markov.ingest(FILENAME);
-
-
-// module.exports = function markov(string) {
-//   if (typeof string !== "string") throw new TypeError("Tiny wants a string!");
-//   return string.replace(/\s/g, "");
-// };
+module.exports = Markov;

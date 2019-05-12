@@ -14,7 +14,7 @@ const ESCAPES = {
     capitalizeNext: true
   },
   'wiki-citation': {
-    pattern: /\[.\]/g,
+    pattern: /\[\d+\]/g,
     buildArtifact: () => {
       const citationNo = Math.ceil(Math.random() * 25);
       return `[${citationNo}]`;
@@ -41,11 +41,12 @@ const ESCAPES = {
     artifact: ';'
   },
   'open-paren': {
-    // pattern: 
+    pattern: /\(/g,
     artifact: '(',
     whitespace: WHITESPACE.BEFORE
   },
   'close-paren': {
+    pattern: /\)/g,
     artifact: ')',
     whitespace: WHITESPACE.AFTER
   }

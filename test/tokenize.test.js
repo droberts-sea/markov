@@ -59,4 +59,12 @@ test('punctuation is escaped', () => {
 test('wikipedia citations are escaped', () => {
   const text = 'the quick[3] brown fox[9][22] jumped.[1][4]';
   const expectedTokens = ['the', 'quick', '<wiki-citation>', 'brown', 'fox', '<wiki-citation>', '<wiki-citation>', 'jumped', '<period>', '<wiki-citation>', '<wiki-citation>']
+  verifyTokenization(text, expectedTokens);
 })
+
+test('parentheses are escaped', () => {
+  const text = '(the ((quick brown) fox ) jumped ()())( over';
+  const expectedTokens = ['<open-paren>', 'the', '<open-paren>', '<open-paren>', 'quick', 'brown', '<close-paren>', 'fox', '<close-paren>', 'jumped', '<open-paren>', '<close-paren>', '<open-paren>', '<close-paren>', '<close-paren>', '<open-paren>', 'over']
+
+  verifyTokenization(text, expectedTokens);
+});

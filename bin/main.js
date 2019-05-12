@@ -11,5 +11,5 @@ fs.readFile(FILENAME, (err, data) => {
   if (err) throw err;
   
   markov.process(data);
-  console.log(markov.generate(100));
+  console.log(markov.generate(150));
 });

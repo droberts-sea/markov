@@ -1,7 +1,7 @@
 import dbg from 'debug';
 const debug = dbg('markov');
 
-import tokenize from './tokenize';
+import { tokenize, assemble } from './tokenize';
 
 
 const TOKENS = {
@@ -136,7 +136,7 @@ class Markov {
   generate(wordCount) {
     const transitions = this.normalizeTransitions();
     let token = TOKENS.START_DOCUMENT;
-    let artifact = "";
+    const artifactTokens = [];
 
     for (let i = 0; i < wordCount; i++) {
       token = this.selectNewToken(token, transitions);
@@ -147,10 +147,10 @@ class Markov {
       }
 
       // TODO: rules for weird tokens like punctuation
-      artifact += token + " ";
+      artifactTokens.push(token);
     }
 
-    return artifact.trim();
+    return assemble(artifactTokens);
   }
 }
 

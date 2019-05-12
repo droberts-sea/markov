@@ -1,42 +1,57 @@
-const SPECIAL_TOKENS = [
-  {
+import dbg from 'debug';
+const debug = dbg('tokenizer');
+
+const WHITESPACE = {
+  BEFORE: 'before',
+  AFTER: 'after',
+  BOTH: 'both',
+  NONE: 'none',
+  DEFAULT: 'after'
+}
+
+const ESCAPES = {
+  paragraph: {
     pattern: /\n\n+/g,
-    escape: 'paragraph'
+    artifact: '\n\n',
+    whitespace: WHITESPACE.NONE,
+    capitalizeNext: true
   },
-  {
+  'wiki-citation': {
     pattern: /\[.\]/g,
-    escape: 'wiki-citation'
+    buildArtifact: () => {
+      const citationNo = Math.ceil(Math.random() * 25);
+      return `[${citationNo}]`;
+    }
   },
-  {
-    pattern: /\d+:\d+/g,
-    escape: 'bible-line-verse'
+  'bible-line-verse': {
+    pattern: /\d+:\d+/g
   },
-  {
+  period: {
     pattern: /\./g,
-    escape: 'period'
+    artifact: '.',
+    capitalizeNext: true
   },
-  {
+  comma: {
     pattern: /,/g,
-    escape: 'comma'
+    artifact: ','
   },
-  {
+  colon: {
     pattern: /:/g,
-    escape: 'colon'
+    artifact: ':'
   },
-  {
+  semicolon: {
     pattern: /;/g,
-    escape: 'semicolon'
-  },
-];
+    artifact: ';'
+  }
+};
 
 function* tokenize(text) {
-  // Find paragraph breaks
   text = text.trim().toLowerCase();
   
-  // Find punctuation
-  SPECIAL_TOKENS.forEach(special => {
-    text = text.replace(special.pattern, ` <${special.escape}> `);
-  });
+  for (const name in ESCAPES) {
+    const token = ESCAPES[name];
+    text = text.replace(token.pattern, ` <${name}> `);
+  }
 
   const tokens = text.split(/\s+/);
   for (const token of tokens) {
@@ -47,4 +62,74 @@ function* tokenize(text) {
   return;
 }
 
-export default tokenize;
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+const assemble = (tokens) => {
+  let artifact = "";
+  let previousWhitespace = WHITESPACE.NONE;
+  let capitalizeNext = true;
+
+  tokens.forEach(token => {
+    
+
+    const match = token.match(/^<(.*)>$/);
+    if (match) {
+      // Special token!
+      const escapeName = match[1];
+      const escape = ESCAPES[escapeName];
+
+      if (escape) {
+        if ((previousWhitespace === WHITESPACE.AFTER ||
+          previousWhitespace === WHITESPACE.BOTH) &&
+          (escape.whitespace === WHITESPACE.BEFORE ||
+            escape.whatespace === WHITESPACE.BOTH)) {
+          artifact += " ";
+        }
+
+        if (escape.artifact) {
+          token = escape.artifact;
+        } else if (escape.buildArtifact) {
+          token = escape.buildArtifact();
+        } else {
+          throw new Error(`No artifact defined for escape sequence '${escapeName}'`)
+        }
+
+        artifact += token;
+
+        if (escape.capitalizeNext) {
+          // only toggle on, so that multiple escapes don't accidentally turn off capitalization
+          capitalizeNext = true;
+        }
+
+        previousWhitespace = escape.whitespace || WHITESPACE.DEFAULT;
+
+      } else {
+        debug(`WARNING: found unknown escape sequence '${escapeName}'. Treating like a normal word.`);
+        artifact += token;
+        previousWhitespace = WHITESPACE.DEFAULT;
+      }
+
+    } else {
+      // Normal word
+      if (previousWhitespace === WHITESPACE.AFTER ||
+        previousWhitespace === WHITESPACE.BOTH) {
+        artifact += " ";
+      }
+
+      if (capitalizeNext) {
+        token = capitalize(token);
+        capitalizeNext = false;
+      }
+      artifact += token;
+      previousWhitespace = WHITESPACE.BOTH;
+    }
+
+  });
+
+  return artifact;
+}
+
+export { tokenize, assemble };

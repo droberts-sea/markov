@@ -39,6 +39,15 @@ const ESCAPES = {
   semicolon: {
     pattern: /;/g,
     artifact: ';'
+  },
+  'open-paren': {
+    // pattern: 
+    artifact: '(',
+    whitespace: WHITESPACE.BEFORE
+  },
+  'close-paren': {
+    artifact: ')',
+    whitespace: WHITESPACE.AFTER
   }
 };
 

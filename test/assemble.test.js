@@ -57,3 +57,24 @@ test('various punctuation', () => {
 
   verifyAssembly(tokens, expectedArtifact);
 })
+
+test('parentheticals', () => {
+  const tokens = ['the', '<open-paren>', 'quick', 'brown', '<close-paren>', 'fox'];
+  const expectedArtifact = "The (quick brown) fox";
+
+  verifyAssembly(tokens, expectedArtifact);
+});
+
+test('parentheticals + puncutation', () => {
+  const tokens = ['the', '<period>', '<open-paren>', 'quick', 'brown', '<comma>', '<close-paren>', '<semicolon>', 'fox'];
+  const expectedArtifact = "The. (Quick brown,); fox";
+
+  verifyAssembly(tokens, expectedArtifact);
+})
+
+test('odd parentheticals', () => {
+  const tokens = ['<close-paren>', '<open-paren>', '<open-paren>', '<open-paren>', 'quick', 'brown', '<paragraph>', 'fox', '<close-paren>', '<close-paren>', '<close-paren>'];
+  const expectedArtifact = ") (((Quick brown\n\nFox)))";
+
+  verifyAssembly(tokens, expectedArtifact);
+})

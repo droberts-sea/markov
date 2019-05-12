@@ -15,7 +15,10 @@ TODO List 5/10:
   - Tokenization
   - Artifact generation
 - [ ] Figure out how to support parens and quotes
-  - Need to keep track of more state ("are we in a quote right now?"). Way to keep things relatively short? Maybe each token has a "probability to end a quote" and "probability to end a parenthetical", which is paid attention to more over time? Could do this for sentences too, to keep lengths realistic.
+  - Need to keep track of more state ("are we in a quote right now?").
+  - Way to keep things relatively short? Maybe each token has a "probability to end a quote" and "probability to end a parenthetical", which is paid attention to more over time?
+    - Could do this for sentences and paragraphs too, to keep lengths realistic.
+    - Need to think about nesting (should finish quote before parens)
 - [ ] Capitalization (input and output)
   - [x] First word of sentence
   - [ ] Proper nouns

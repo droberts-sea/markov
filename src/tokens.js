@@ -6,6 +6,8 @@ const WHITESPACE = {
   DEFAULT: 'after'
 }
 
+
+
 const ESCAPES = {
   paragraph: {
     pattern: /\n\n+/g,
@@ -21,7 +23,19 @@ const ESCAPES = {
     }
   },
   'bible-line-verse': {
-    pattern: /\d+:\d+/g
+    pattern: /\d+:\d+/g,
+    buildArtifact:(() => {
+      let book = Math.ceil(Math.random() * 10);
+      let verse = Math.ceil(Math.random() * 20);
+      return () => {
+        verse += 1;
+        if (verse > 15 && Math.random() > .8) {
+          book += 1;
+          verse = 1;
+        }
+        return `\n\n${book}:${verse}`;
+      }
+    })()
   },
   period: {
     pattern: /\./g,

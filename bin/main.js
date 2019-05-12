@@ -3,8 +3,8 @@ import fs from 'fs';
 
 import Markov from '../src/markov';
 
-// const FILENAME = 'data/kingjamesbible.txt';
-const FILENAME = 'data/wwii.txt';
+const FILENAME = 'data/kingjamesbible.txt';
+// const FILENAME = 'data/wwii.txt';
 const markov = new Markov();
 
 fs.readFile(FILENAME, (err, data) => {

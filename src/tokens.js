@@ -6,8 +6,6 @@ const WHITESPACE = {
   DEFAULT: 'after'
 }
 
-
-
 const ESCAPES = {
   paragraph: {
     pattern: /\n\n+/g,
@@ -66,4 +64,9 @@ const ESCAPES = {
   }
 };
 
-export { WHITESPACE, ESCAPES };
+const DOCUMENT_TOKENS = {
+  START_DOCUMENT: '<start-document>',
+  END_DOCUMENT: '<end-document>'
+}
+
+export { WHITESPACE, ESCAPES, DOCUMENT_TOKENS };

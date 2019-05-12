@@ -1,36 +1,34 @@
 import dbg from 'debug';
 const debug = dbg('markov');
 
-import assemble from './assemble';
 import tokenize from './tokenize';
-
-const TOKENS = {
-  START_DOCUMENT: '<start-document>',
-  END_DOCUMENT: '<end-document>'
-}
+import { DOCUMENT_TOKENS } from './tokens';
 
 class Markov {
 
-  constructor({transitions}={}) {
+  constructor({transitions, historyLength=1}={}) {
     debug("In the constructor");
+
+    this.historyLength = historyLength;
     
     if (transitions) {
       this.transitions = transitions;
     } else {
       this.transitions = {};
-      this.transitions[TOKENS.START_DOCUMENT] = {};
+      this.transitions[DOCUMENT_TOKENS.START_DOCUMENT] = {};
     }
   }
 
   beginDocument() {
-    this.tokenHistory = TOKENS.START_DOCUMENT;
+    this.tokenHistory = [DOCUMENT_TOKENS.START_DOCUMENT];
   }
 
   endDocument() {
-    if (this.tokenHistory === TOKENS.START_DOCUMENT) {
+    if (this.tokenHistory.length === 1 &&
+      this.tokenHistory[0] === DOCUMENT_TOKENS.START_DOCUMENT) {
       debug("Ignored empty document");
     } else {
-      this.addToken(TOKENS.END_DOCUMENT);
+      this.addToken(DOCUMENT_TOKENS.END_DOCUMENT);
     }
   }
 
@@ -40,8 +38,6 @@ class Markov {
       console.log(`${key}: ${JSON.stringify(this.transitions[key])}`);
     }
   }
-
-  
 
   process(data) {
     debug(`data is of class ${data.constructor.name}`);
@@ -57,21 +53,26 @@ class Markov {
     this.endDocument();
   }
 
-  splitTokens(line) {
-    return line.split(' ');
+  updateHistory(token, _oldHistory) {
+    return [token];
+  }
+
+  getTransitions() {
+    const token = this.tokenHistory[this.tokenHistory.length - 1];
+    return this.transitions[token];
   }
 
   addToken(token) {
-    const state = this.transitions[this.tokenHistory];
-    if (!state) {
+    const previousTransitions = this.getTransitions();
+    if (!previousTransitions) {
       throw new Error('Invariant violated: token history not in transition list');
     }
 
     // Record this transition
-    if (state.hasOwnProperty(token)) {
-      state[token] += 1;
+    if (previousTransitions.hasOwnProperty(token)) {
+      previousTransitions[token] += 1;
     } else {
-      state[token] = 1;
+      previousTransitions[token] = 1;
     }
 
     // Add a new transition record for this token if needed
@@ -110,47 +111,6 @@ class Markov {
     }
 
     return normalized;
-  }
-
-  updateHistory(token, _oldHistory) {
-    return token;
-  }
-
-  selectNewToken(token, transitions) {
-    const threshold = Math.random();
-    let sum = 0;
-    let selectedTarget;
-    for (const target in transitions[token]) {
-      sum += transitions[token][target];
-      if (sum > threshold) {
-        selectedTarget = target;
-        break;
-      }
-    }
-    if (!selectedTarget) {
-      throw new Error(`Invariant violated: no new token was selected, token was ${token}, targets are ${JSON.stringify(transitions[token])}`);
-    }
-    return selectedTarget;
-  }
-
-  generate(wordCount) {
-    const transitions = this.normalizeTransitions();
-    let token = TOKENS.START_DOCUMENT;
-    const artifactTokens = [];
-
-    for (let i = 0; i < wordCount; i++) {
-      token = this.selectNewToken(token, transitions);
-
-      if (token === TOKENS.END_DOCUMENT) {
-        // Much more likely on our small testing datasets
-        break;
-      }
-
-      // TODO: rules for weird tokens like punctuation
-      artifactTokens.push(token);
-    }
-
-    return assemble(artifactTokens);
   }
 }
 

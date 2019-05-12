@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-import { tokenize } from '../src/tokenize';
+import tokenize from '../src/tokenize';
 
 const verifyTokenization = (text, expectedTokens) => {
   const tokenStream = tokenize(text);

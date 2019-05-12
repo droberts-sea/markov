@@ -173,12 +173,12 @@ describe('normalizeTransitions', () => {
 describe('artifact generation', () => {
   test('generates the source text if given no repeated words', () => {
     const markov = new Markov();
-    const text = "the quick brown fox";
+    const text = "The quick brown fox";
     const wordCount = text.split(' ').length
     markov.process(text);
 
     let artifact = markov.generate(2);
-    expect(artifact).toEqual("the quick");
+    expect(artifact).toEqual("The quick");
 
     artifact = markov.generate(wordCount);
     expect(artifact).toEqual(text);
@@ -186,7 +186,7 @@ describe('artifact generation', () => {
 
   test('stops early if asked for more words than it can give', () => {
     const markov = new Markov();
-    const text = "the quick brown fox";
+    const text = "The quick brown fox";
     markov.process(text);
 
     const artifact = markov.generate(100);

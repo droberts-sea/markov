@@ -1,8 +1,8 @@
 import dbg from 'debug';
 const debug = dbg('markov');
 
-import { tokenize, assemble } from './tokenize';
-
+import assemble from './assemble';
+import tokenize from './tokenize';
 
 const TOKENS = {
   START_DOCUMENT: '<start-document>',

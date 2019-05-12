@@ -11,15 +11,22 @@ Debug for logging
 DEBUG=markov bin/main.js
 
 TODO List 5/10:
-- Handle punctuation (period, comma, citation, etc)
+- [x] Handle punctuation (period, comma, citation, etc)
   - Tokenization
   - Artifact generation
-- Capitalization (input and output)
-- Finish with a period
+- [ ] Figure out how to support parens and quotes
+  - Need to keep track of more state ("are we in a quote right now?"). Way to keep things relatively short? Maybe each token has a "probability to end a quote" and "probability to end a parenthetical", which is paid attention to more over time? Could do this for sentences too, to keep lengths realistic.
+- [ ] Capitalization (input and output)
+  - [x] First word of sentence
+  - [ ] Proper nouns
+- [ ] Finish with a period
   - Limit is soft, find the last period and go until the next period, figure out which gets you closer to the goal
   - Increase the probability of a period around the word count.
-- Multi-token history (input and output)
-- Get more / better test data
+  - Possibly related to work on parens and quotes above.
+- [ ] Multi-token history (input and output)
+- [ ] Get more / better test data
+  - More random texts for fun
+  - List of scientific paper titles or conference talks (where to find?)
 
 Vocab list
 - Source document / document: one thing to read

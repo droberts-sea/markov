@@ -1,6 +1,6 @@
 {
   "name": "@droberts-ada/markov",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Markov chain generator for generating text similar to a source",
   "license": "MIT",
   "repository": "droberts-ada/markov",

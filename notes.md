@@ -26,7 +26,9 @@ TODO List 5/10:
   - Limit is soft, find the last period and go until the next period, figure out which gets you closer to the goal
   - Increase the probability of a period around the word count.
   - Possibly related to work on parens and quotes above.
-- [ ] Multi-token history (input and output)
+- Multi-token history (input and output)
+  - [x] Fixed length
+  - [ ] Track all lengths up to max length, and somehow use this to generate (think about measure of how idiomatic a word is, how narrow is its use?)
 - [ ] Get more / better test data
   - More random texts for fun
   - List of scientific paper titles or conference talks (where to find?)

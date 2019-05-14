@@ -1,6 +1,7 @@
 import dbg from 'debug';
 const debug = dbg('markov');
 
+import ArtifactGenerator from './artifact_generator';
 import tokenize from './tokenize';
 import { DOCUMENT_TOKENS } from './tokens';
 
@@ -117,6 +118,10 @@ class Markov {
     }
 
     return normalized;
+  }
+
+  buildGenerator() {
+    return new ArtifactGenerator(this.normalizeTransitions(), this.historyLength);
   }
 }
 

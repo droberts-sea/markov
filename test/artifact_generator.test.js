@@ -1,5 +1,4 @@
 import Markov from '../src/markov';
-import ArtifactGenerator from '../src/artifact_generator';
 
 describe('artifact generation', () => {
   test('generates the source text if given no repeated words', () => {
@@ -8,7 +7,7 @@ describe('artifact generation', () => {
     const wordCount = text.split(' ').length
     markov.process(text);
 
-    const generator = new ArtifactGenerator(markov.normalizeTransitions());
+    const generator = markov.buildGenerator();
     let artifact = generator.generate(2);
     expect(artifact).toEqual("The quick");
 
@@ -21,7 +20,7 @@ describe('artifact generation', () => {
     const text = "The quick brown fox";
     markov.process(text);
 
-    const generator = new ArtifactGenerator(markov.normalizeTransitions());
+    const generator = markov.buildGenerator();
     const artifact = generator.generate(100);
     expect(artifact).toEqual(text);
   })
@@ -32,7 +31,7 @@ describe('artifact generation', () => {
     markov.process("two steps");
     markov.process("three whole steps");
 
-    const generator = new ArtifactGenerator(markov.normalizeTransitions());
+    const generator = markov.buildGenerator();
     const artifacts = [];
     for (let i = 0; i < 1000; i++) {
       artifacts.push(generator.generate(3));
@@ -46,7 +45,7 @@ describe('multi-token history', () => {
   test('it can generate a document from a multi-token transition table', () => {
     const markov = new Markov({historyLength: 2});
     markov.process("the quick brown fox");
-    const generator = new ArtifactGenerator(markov.normalizeTransitions(), 2);
+    const generator = markov.buildGenerator();
     const artifact = generator.generate(100);
     expect(artifact).toBe("The quick brown fox");
   })

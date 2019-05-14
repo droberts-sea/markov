@@ -2,7 +2,6 @@
 import fs from 'fs';
 
 import Markov from '../src/markov';
-import ArtifactGenerator from '../src/artifact_generator';
 
 const FILENAME = 'data/kingjamesbible.txt';
 // const FILENAME = 'data/wwii.txt';
@@ -13,6 +12,6 @@ fs.readFile(FILENAME, (err, data) => {
   
   markov.process(data);
 
-  const generator = new ArtifactGenerator(markov.normalizeTransitions(), 2);
+  const generator = markov.buildGenerator();
   console.log(generator.generate(150));
 });

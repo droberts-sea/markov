@@ -27,11 +27,19 @@ TODO List 5/10:
   - Increase the probability of a period around the word count.
   - Possibly related to work on parens and quotes above.
 - Multi-token history (input and output)
-  - [x] Fixed length
+  - [x] Fixed length of `h`
+  - [ ] How to assess quality of generated text, given different histories?
   - [ ] Track all lengths up to max length, and somehow use this to generate (think about measure of how idiomatic a word is, how narrow is its use?)
+    - Shouldn't take too much extra space - (max) number of states is `v^h`, where `v` is vocab size and `h` is history length, so adding in `v^h-1 ... v^1` should effectively not matter.
+  - [ ] Do something special for things like punctuation (maybe not needed)
 - [ ] Get more / better test data
   - More random texts for fun
   - List of scientific paper titles or conference talks (where to find?)
+
+Advanced analysis / NLP
+- [ ] Topics for paragraphs
+  - Bag of words / k-means to cluster paragraphs, then figure out the most "distinctive" word for each. Maybe transitions are weighted based on topic, particularly for more distinctive words?
+  - Fuck HTF do you test this?
 
 Vocab list
 - Source document / document: one thing to read

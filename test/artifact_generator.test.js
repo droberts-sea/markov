@@ -50,3 +50,13 @@ describe('multi-token history', () => {
     expect(artifact).toBe("The quick brown fox");
   })
 })
+
+test('allows starting with a non-standard token', () => {
+  const markov = new Markov();
+  const text = "The quick brown fox";
+  markov.process(text);
+
+  const generator = markov.buildGenerator();
+  const artifact = generator.generate(100, {startToken: 'quick'});
+  expect(artifact).toEqual('Quick brown fox');
+});

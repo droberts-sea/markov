@@ -13,7 +13,7 @@ fs.readFile(FILENAME, (err, data) => {
   markov.process(data);
 
   const generator = markov.buildGenerator();
-  console.log(generator.generate(150));
+  console.log(generator.generate(150, {startToken: '<paragraph> <bible-line-verse>'}));
 
   // console.log("\nTransitions for bible verse:")
   // for (const state in generator.transitions) {

@@ -10,10 +10,6 @@ class ArtifactGenerator {
     this.historyLength = historyLength;
   }
 
-  beginArtifact() {
-    this.history = [DOCUMENT_TOKENS.START_DOCUMENT];
-  }
-
   currentState() {
     return this.history.join(' ');
   }
@@ -44,9 +40,17 @@ class ArtifactGenerator {
     return selectedTarget;
   }
 
-  generate(wordCount) {
-    this.beginArtifact();
+  generate(wordCount, {startToken=DOCUMENT_TOKENS.START_DOCUMENT}={}) {
+    // TODO this solution is hackey garbage - if the history length is > 1 you
+    // have to pass in multiple tokens as a string, and it has to match the history length.
+    // Might be better some day if I implement variable history length
+    this.history = [...startToken.split(' ')];
     const artifactTokens = [];
+    if (startToken != DOCUMENT_TOKENS.START_DOCUMENT) {
+      for (const token of startToken.split(' ')) {
+        artifactTokens.push(token);
+      }
+    }
 
     for (let i = 0; i < wordCount; i++) {
       const token = this.selectNewToken();

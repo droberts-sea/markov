@@ -8,7 +8,7 @@ const WHITESPACE = {
 
 const ESCAPES = {
   paragraph: {
-    pattern: /\n\n+/g,
+    pattern: /\n\n+|\r\r+|\r\n(\r\n)+/g,
     artifact: '\n\n',
     whitespace: WHITESPACE.NONE,
     capitalizeNext: true
@@ -31,9 +31,10 @@ const ESCAPES = {
           book += 1;
           verse = 1;
         }
-        return `\n\n${book}:${verse}`;
+        return `${book}:${verse}`;
       }
-    })()
+    })(),
+    whitespace: WHITESPACE.BOTH
   },
   period: {
     pattern: /\./g,
@@ -63,6 +64,13 @@ const ESCAPES = {
     whitespace: WHITESPACE.AFTER
   }
 };
+
+for (const name in ESCAPES) {
+  const escape = ESCAPES[name];
+  if (!escape.whitespace) {
+    escape.whitespace = WHITESPACE.DEFAULT;
+  }
+}
 
 const DOCUMENT_TOKENS = {
   START_DOCUMENT: '<start-document>',

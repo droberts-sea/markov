@@ -78,3 +78,28 @@ test('odd parentheticals', () => {
 
   verifyAssembly(tokens, expectedArtifact);
 })
+
+test('bible line verses', () => {
+  const tokens = [
+    '<bible-line-verse>',
+    'the',
+    'quick',
+    '<semicolon>',
+    '<bible-line-verse>',
+    'brown',
+    'fox',
+    '<period>',
+    '<paragraph>',
+    '<bible-line-verse>',
+    'jumped',
+    'over',
+    '<bible-line-verse>',
+    'the',
+    'lazy',
+    '<bible-line-verse>',
+    '<bible-line-verse>'
+  ];
+  const artifactPattern = /\d+:\d+ the quick; \d+:\d+ brown fox\.\n\n\d+:\d+ jumped over \d+:\d+ the lazy \d+:\d+ \d+:\d+/i;
+  const artifact = assemble(tokens);
+  expect(artifact).toMatch(artifactPattern);
+});

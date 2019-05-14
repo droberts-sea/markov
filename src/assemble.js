@@ -24,8 +24,9 @@ const assemble = (tokens) => {
         if ((previousWhitespace === WHITESPACE.AFTER ||
           previousWhitespace === WHITESPACE.BOTH) &&
           (escape.whitespace === WHITESPACE.BEFORE ||
-            escape.whatespace === WHITESPACE.BOTH)) {
+            escape.whitespace === WHITESPACE.BOTH)) {
           artifact += " ";
+        } else {
         }
 
         if (escape.artifact) {

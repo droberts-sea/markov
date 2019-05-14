@@ -50,6 +50,22 @@ test('multiple newlines mark a paragraph', () => {
   verifyTokenization(text, expectedTokens);
 })
 
+test('counts CR and CRLF as newlines', () => {
+  const text = '\r\nthe\r\n\r\nquick\r\rbrown\r\nfox\rjumped\r\n\r\n\r\nover';
+  const expectedTokens = [
+    'the',
+    '<paragraph>',
+    'quick',
+    '<paragraph>',
+    'brown',
+    'fox',
+    'jumped',
+    '<paragraph>',
+    'over'
+  ];
+  verifyTokenization(text, expectedTokens);
+})
+
 test('punctuation is escaped', () => {
   const text = 'the. quick, brown: fox; .jumped ,over, :the ; lazy dog';
   const expectedTokens = ['the', '<period>', 'quick', '<comma>', 'brown', '<colon>', 'fox', '<semicolon>', '<period>', 'jumped', '<comma>', 'over', '<comma>', '<colon>', 'the', '<semicolon>', 'lazy', 'dog'];
@@ -68,3 +84,27 @@ test('parentheses are escaped', () => {
 
   verifyTokenization(text, expectedTokens);
 });
+
+test('bible verses are escaped', () => {
+  const text = '3:18 the quick; 3:19 brown fox.\n\n4:1 jumped over 4:2 the lazy 4:3 4:4';
+  const expectedTokens = [
+    '<bible-line-verse>',
+    'the',
+    'quick',
+    '<semicolon>',
+    '<bible-line-verse>',
+    'brown',
+    'fox',
+    '<period>',
+    '<paragraph>',
+    '<bible-line-verse>',
+    'jumped',
+    'over',
+    '<bible-line-verse>',
+    'the',
+    'lazy',
+    '<bible-line-verse>',
+    '<bible-line-verse>'
+  ];
+  verifyTokenization(text, expectedTokens);
+})

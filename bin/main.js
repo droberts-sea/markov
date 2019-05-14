@@ -14,4 +14,11 @@ fs.readFile(FILENAME, (err, data) => {
 
   const generator = markov.buildGenerator();
   console.log(generator.generate(150));
+
+  // console.log("\nTransitions for bible verse:")
+  // for (const state in generator.transitions) {
+  //   if (state.includes('<paragraph>')) {
+  //     console.log(`${state}: ${JSON.stringify(generator.transitions[state])}`);
+  //   }
+  // }
 });

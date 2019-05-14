@@ -1,3 +1,6 @@
+import dbg from 'debug';
+const debug = dbg('assembler');
+
 import { WHITESPACE, ESCAPES } from './tokens';
 
 const capitalize = (s) => {

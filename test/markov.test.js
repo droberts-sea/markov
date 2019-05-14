@@ -1,5 +1,4 @@
 import {toBeDeepCloseTo,toMatchCloseTo} from 'jest-matcher-deep-close-to';
-import { log } from 'core-js';
 expect.extend({toBeDeepCloseTo, toMatchCloseTo});
 
 import Markov from '../src/markov';

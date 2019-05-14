@@ -14,12 +14,19 @@ class ArtifactGenerator {
     this.history = [DOCUMENT_TOKENS.START_DOCUMENT];
   }
 
+  currentState() {
+    return this.history.join(' ');
+  }
+
   updateHistory(token) {
-    this.history = [token];
+    while (this.history.length > this.historyLength - 1) {
+      this.history.shift();
+    }
+    this.history.push(token);
   }
 
   selectNewToken() {
-    const token = this.history[this.history.length - 1];
+    const token = this.currentState();
 
     const threshold = Math.random();
     let sum = 0;
@@ -32,7 +39,7 @@ class ArtifactGenerator {
       }
     }
     if (!selectedTarget) {
-      throw new Error(`Invariant violated: no new token was selected, token was ${token}, targets are ${JSON.stringify(this.transitions[token])}`);
+      throw new Error(`Invariant violated: no new token was selected, token was '${token}', targets are ${JSON.stringify(this.transitions[token])}`);
     }
     return selectedTarget;
   }

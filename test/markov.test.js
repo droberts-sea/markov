@@ -125,6 +125,23 @@ describe('transition table construction', () => {
   })
 })
 
+describe('multi-token history', () => {
+  test('can track multiple tokens of history', () => {
+    const markov = new Markov({historyLength: 2});
+    markov.process("the quick brown fox");
+
+    const expected_transitions = {
+      '<start-document>': { the: 1 },
+      '<start-document> the': { quick: 1 },
+      'the quick': { brown: 1 },
+      'quick brown': { fox: 1 },
+      'brown fox': { '<end-document>': 1 },
+      'fox <end-document>': {}
+    }
+    expect(markov.transitions).toEqual(expected_transitions);
+  })
+})
+
 describe('normalizeTransitions', () => {
   test('individual numbers turn into 1', () => {
     const markov = new Markov({transitions: {

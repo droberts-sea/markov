@@ -22,7 +22,7 @@ describe('artifact generation', () => {
     markov.process(text);
 
     const generator = new ArtifactGenerator(markov.normalizeTransitions());
-    let artifact = generator.generate(100);
+    const artifact = generator.generate(100);
     expect(artifact).toEqual(text);
   })
 
@@ -39,5 +39,15 @@ describe('artifact generation', () => {
     }
     const artifact_lengths = new Set(artifacts.map(art => art.split(' ').length));
     expect(artifact_lengths.size).toBe(3)
+  })
+})
+
+describe('multi-token history', () => {
+  test('it can generate a document from a multi-token transition table', () => {
+    const markov = new Markov({historyLength: 2});
+    markov.process("the quick brown fox");
+    const generator = new ArtifactGenerator(markov.normalizeTransitions(), 2);
+    const artifact = generator.generate(100);
+    expect(artifact).toBe("The quick brown fox");
   })
 })

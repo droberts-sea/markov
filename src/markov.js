@@ -53,35 +53,41 @@ class Markov {
     this.endDocument();
   }
 
-  updateHistory(token, _oldHistory) {
-    return [token];
+  currentState() {
+    return this.tokenHistory.join(' ');
   }
 
-  getTransitions() {
-    const token = this.tokenHistory[this.tokenHistory.length - 1];
-    return this.transitions[token];
-  }
+  recordTransition(token) {
+    const currentState = this.currentState();
+    const previousTransitions = this.transitions[currentState];
 
-  addToken(token) {
-    const previousTransitions = this.getTransitions();
     if (!previousTransitions) {
       throw new Error('Invariant violated: token history not in transition list');
     }
 
-    // Record this transition
     if (previousTransitions.hasOwnProperty(token)) {
       previousTransitions[token] += 1;
     } else {
       previousTransitions[token] = 1;
     }
+  }
 
-    // Add a new transition record for this token if needed
-    if (!this.transitions.hasOwnProperty(token)) {
-      this.transitions[token] = {};
+  updateHistory(token) {
+    while (this.tokenHistory.length > this.historyLength - 1) {
+      this.tokenHistory.shift();
     }
+    this.tokenHistory.push(token);
 
-    // Set the history
-    this.tokenHistory = this.updateHistory(token, this.tokenHistory);
+    const currentState = this.currentState();
+    if (!this.transitions.hasOwnProperty(currentState)) {
+      this.transitions[currentState] = {};
+    }
+  }
+
+  addToken(token) {
+    this.recordTransition(token)
+
+    this.updateHistory(token);
   }
 
   normalizeTransitions() {

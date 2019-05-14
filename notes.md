@@ -10,10 +10,11 @@ https://jestjs.io/docs/en/getting-started
 Debug for logging
 DEBUG=markov bin/main.js
 
-TODO List 5/10:
+TODO List weekend of 5/10:
 - [x] Handle punctuation (period, comma, citation, etc)
   - Tokenization
   - Artifact generation
+- [ ] Comments in the source document?
 - [ ] Figure out how to support parens and quotes
   - Need to keep track of more state ("are we in a quote right now?").
   - Way to keep things relatively short? Maybe each token has a "probability to end a quote" and "probability to end a parenthetical", which is paid attention to more over time?

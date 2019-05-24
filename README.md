@@ -1,5 +1,5 @@
-https://img.shields.io/npm/v/@droberts-ada/markov.svg
-https://img.shields.io/bundlephobia/min/@droberts-ada/markov.svg
+![](https://img.shields.io/npm/v/@droberts-ada/markov.svg)
+![](https://img.shields.io/bundlephobia/min/@droberts-ada/markov.svg)
 
 # markov
 

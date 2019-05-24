@@ -16,3 +16,7 @@ $ npm install @droberts-ada/markov
 ```
 whatever
 ```
+
+## Development
+
+see [notes.md](notes.md)

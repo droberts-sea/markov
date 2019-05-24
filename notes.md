@@ -40,7 +40,7 @@ TODO List weekend of 5/10:
 Advanced analysis / NLP
 - [ ] Topics for paragraphs
   - Bag of words / k-means to cluster paragraphs, then figure out the most "distinctive" word for each. Maybe transitions are weighted based on topic, particularly for more distinctive words?
-  - Fuck HTF do you test this?
+  - How do you test this?
 
 Vocab list
 - Source document / document: one thing to read
